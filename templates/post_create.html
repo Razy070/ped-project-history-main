@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="text-center">Публикация товара</h1>
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{% url 'create_post' %}" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="title" class="form-label">Название товара:</label>
+                <input type="text" name="title" id="title" class="form-control" minlength="1" maxlength="200">
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label">Описание:</label>
+                  <textarea type="text" name="description" id="description" class="form-control" minlength="1" rows="7"></textarea>
+                  <div class="text-center">
+                <button type="submit" class="btn btn-primary" href="{% url 'create_post' %}">Create</button>
+              </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+          </div>
+        </div>
+
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<title>Profile</title>
+
+<div class="center">
+<div class="text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 card mb-4  mt-3 left  top">
+                <div class="card-body">
+                    <div class="text-center">
+                      <img src="{{ Post.cover.url }}" class="rounded" alt="...">
+                    </div>
+                     <p>Никнейм: {{ request.user.username }}</p>
+{#                    <p class="btn btn btn-outline-danger">test: {{ users }}</p>#}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+    <div class="text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 card mb-4  mt-3 left  top">
+                <div class="card-body">
+                    <a class="btn btn btn-outline-danger" href="{% url 'main' %}" >Вернутся на главную...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

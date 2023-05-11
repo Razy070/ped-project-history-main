@@ -1,0 +1,179 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="7">
+            <item index="0" class="java.lang.String" itemvalue="media" />
+            <item index="1" class="java.lang.String" itemvalue="index" />
+            <item index="2" class="java.lang.String" itemvalue="app_name_task_list:sign_in" />
+            <item index="3" class="java.lang.String" itemvalue="img" />
+            <item index="4" class="java.lang.String" itemvalue="src" />
+            <item index="5" class="java.lang.String" itemvalue="href" />
+            <item index="6" class="java.lang.String" itemvalue="width" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="13">
+            <item index="0" class="java.lang.String" itemvalue="nobr" />
+            <item index="1" class="java.lang.String" itemvalue="noembed" />
+            <item index="2" class="java.lang.String" itemvalue="comment" />
+            <item index="3" class="java.lang.String" itemvalue="noscript" />
+            <item index="4" class="java.lang.String" itemvalue="embed" />
+            <item index="5" class="java.lang.String" itemvalue="script" />
+            <item index="6" class="java.lang.String" itemvalue="style" />
+            <item index="7" class="java.lang.String" itemvalue="h4" />
+            <item index="8" class="java.lang.String" itemvalue="p" />
+            <item index="9" class="java.lang.String" itemvalue="h2" />
+            <item index="10" class="java.lang.String" itemvalue="img" />
+            <item index="11" class="java.lang.String" itemvalue="a" />
+            <item index="12" class="java.lang.String" itemvalue="h1" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="62">
+            <item index="0" class="java.lang.String" itemvalue="gnureadline" />
+            <item index="1" class="java.lang.String" itemvalue="psycopg2" />
+            <item index="2" class="java.lang.String" itemvalue="Pillow" />
+            <item index="3" class="java.lang.String" itemvalue="pillow" />
+            <item index="4" class="java.lang.String" itemvalue="django-grappelli" />
+            <item index="5" class="java.lang.String" itemvalue="dj-database-url" />
+            <item index="6" class="java.lang.String" itemvalue="django-environ" />
+            <item index="7" class="java.lang.String" itemvalue="Django" />
+            <item index="8" class="java.lang.String" itemvalue="tzdata" />
+            <item index="9" class="java.lang.String" itemvalue="asgiref" />
+            <item index="10" class="java.lang.String" itemvalue="whitenoise" />
+            <item index="11" class="java.lang.String" itemvalue="gunicorn" />
+            <item index="12" class="java.lang.String" itemvalue="django-cors-headers" />
+            <item index="13" class="java.lang.String" itemvalue="sqlparse" />
+            <item index="14" class="java.lang.String" itemvalue="numpy" />
+            <item index="15" class="java.lang.String" itemvalue="altgraph" />
+            <item index="16" class="java.lang.String" itemvalue="greenlet" />
+            <item index="17" class="java.lang.String" itemvalue="async-timeout" />
+            <item index="18" class="java.lang.String" itemvalue="pixellib" />
+            <item index="19" class="java.lang.String" itemvalue="python-dateutil" />
+            <item index="20" class="java.lang.String" itemvalue="cffi" />
+            <item index="21" class="java.lang.String" itemvalue="bottle" />
+            <item index="22" class="java.lang.String" itemvalue="cycler" />
+            <item index="23" class="java.lang.String" itemvalue="pycparser" />
+            <item index="24" class="java.lang.String" itemvalue="requests" />
+            <item index="25" class="java.lang.String" itemvalue="frozenlist" />
+            <item index="26" class="java.lang.String" itemvalue="gevent-websocket" />
+            <item index="27" class="java.lang.String" itemvalue="PyQt6" />
+            <item index="28" class="java.lang.String" itemvalue="whichcraft" />
+            <item index="29" class="java.lang.String" itemvalue="certifi" />
+            <item index="30" class="java.lang.String" itemvalue="pywin32-ctypes" />
+            <item index="31" class="java.lang.String" itemvalue="soupsieve" />
+            <item index="32" class="java.lang.String" itemvalue="gevent" />
+            <item index="33" class="java.lang.String" itemvalue="urllib3" />
+            <item index="34" class="java.lang.String" itemvalue="pyparsing" />
+            <item index="35" class="java.lang.String" itemvalue="zope.event" />
+            <item index="36" class="java.lang.String" itemvalue="auto-py-to-exe" />
+            <item index="37" class="java.lang.String" itemvalue="beautifulsoup4" />
+            <item index="38" class="java.lang.String" itemvalue="pyinstaller" />
+            <item index="39" class="java.lang.String" itemvalue="six" />
+            <item index="40" class="java.lang.String" itemvalue="opencv-python" />
+            <item index="41" class="java.lang.String" itemvalue="aiofiles" />
+            <item index="42" class="java.lang.String" itemvalue="kiwisolver" />
+            <item index="43" class="java.lang.String" itemvalue="zope.interface" />
+            <item index="44" class="java.lang.String" itemvalue="packaging" />
+            <item index="45" class="java.lang.String" itemvalue="Eel" />
+            <item index="46" class="java.lang.String" itemvalue="attrs" />
+            <item index="47" class="java.lang.String" itemvalue="contourpy" />
+            <item index="48" class="java.lang.String" itemvalue="pefile" />
+            <item index="49" class="java.lang.String" itemvalue="pyinstaller-hooks-contrib" />
+            <item index="50" class="java.lang.String" itemvalue="fonttools" />
+            <item index="51" class="java.lang.String" itemvalue="future" />
+            <item index="52" class="java.lang.String" itemvalue="matplotlib" />
+            <item index="53" class="java.lang.String" itemvalue="charset-normalizer" />
+            <item index="54" class="java.lang.String" itemvalue="aiohttp" />
+            <item index="55" class="java.lang.String" itemvalue="multidict" />
+            <item index="56" class="java.lang.String" itemvalue="PyQt6-Qt6" />
+            <item index="57" class="java.lang.String" itemvalue="yarl" />
+            <item index="58" class="java.lang.String" itemvalue="aiosignal" />
+            <item index="59" class="java.lang.String" itemvalue="PyQt6-sip" />
+            <item index="60" class="java.lang.String" itemvalue="bottle-websocket" />
+            <item index="61" class="java.lang.String" itemvalue="idna" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N801" />
+          <option value="N802" />
+          <option value="N806" />
+          <option value="N803" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="excel.wb" />
+          <option value="neew.*" />
+          <option value="workkk.dab971490518faf8356df575a4326e5ad6907966" />
+          <option value="object.__getitem__" />
+          <option value="json.load" />
+          <option value="QtGui" />
+          <option value="QtWidgets" />
+          <option value="QtCore" />
+          <option value="cv2.cv2.IMREAD_GRAYSCALE" />
+          <option value="cv2.cv2.imread" />
+          <option value="cv2.cv2.imshow" />
+          <option value="cv2.cv2.waitKey" />
+          <option value="cv2.cv2.imwrite" />
+          <option value="openpyxl" />
+          <option value="pyside6.xx.ui_mainwindow" />
+          <option value="pyside6.cc.classes1_tests" />
+          <option value="pyside6.cc.work_datetime" />
+          <option value="hw.excel.column_1" />
+          <option value="hw.excel.column_2" />
+          <option value="hw.excel.column_3" />
+          <option value="hello.flask_calendar" />
+          <option value="git.persepolis" />
+          <option value="str.sort" />
+          <option value="str.append" />
+          <option value="PyQt6.QtWidgets.cellClicked.connect" />
+          <option value="start_bot.telebot__.chat_id" />
+          <option value="telebot.types" />
+          <option value="django_app.models.Post" />
+          <option value="django_app.urls.Post" />
+          <option value="django_app.views.PageNumberPagination" />
+          <option value="django_app.views.filters" />
+          <option value="django_app.views.MyModel" />
+          <option value="django_app.views.MyModelSerializer" />
+          <option value="django_app.views.api_view" />
+          <option value="django_app.views.Post" />
+          <option value="django_app.views.*" />
+          <option value="dict.__mod__" />
+          <option value="django_app.Post" />
+          <option value="super.dispatch" />
+          <option value="pytutorial.settings.MIDDLEWARE_CLASSES" />
+          <option value="db.postgresql.cursor" />
+          <option value="db.postgresql.conn" />
+          <option value="PyQt5.uic" />
+          <option value="main.get_session" />
+          <option value="SQLAlchemy" />
+          <option value="app.flask_sqlalchemy" />
+          <option value="tuple.append" />
+          <option value="int.append" />
+          <option value="cv2.imread" />
+          <option value="set.__getitem__" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

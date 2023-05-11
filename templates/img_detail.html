@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+    <div class="container">
+        <div class="row">
+
+            <!-- Blog Entries Column -->
+            <div class="col-md-8 mt-3 left">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                {% for Img in object_list %}
+                    <h3 class="text-center">{{ Img.title }}</h3>
+              <div class="text-center">
+              <img src="{{ Img.cover.url}}" class="rounded" alt="" width="600" height="500">
+                  <h6 class="card-text">{{ Img.description }}</h6>
+            <div class="card-body" style="margin-top: 50px;">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endfor %}
+        </div>
+    </div>
+</div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}
