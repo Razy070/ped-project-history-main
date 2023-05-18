@@ -1,12 +1,18 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.core.cache import caches
+
+from django.db import transaction
 from django.http import HttpRequest, HttpResponse, FileResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views import generic
+from django.views import generic, View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, CreateView
 from django.contrib.auth.decorators import login_required
-from .forms import CommentForm
+
+from .forms import CommentForm, ContactForm, UserUpdateForm, ProfileUpdateForm
 from .models import Post
 from blog import models as django_models, models
 from django.contrib.auth import login, authenticate, logout
@@ -19,22 +25,32 @@ from django.http import FileResponse, HttpRequest, HttpResponse
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET, require_http_methods
 
+from django.core.mail import send_mail, BadHeaderError
+
+LocMemCache = caches["default"]
+
 
 class PostList(generic.ListView):
-    queryset = Post.objects.filter(status=1).order_by("-created_on")
-    template_name = "index.html"
+    template_name = "main/index.html"
     paginate_by = 3
 
+    def get_queryset(self):
+        data = LocMemCache.get('Listofobject')
+        if not data:
+            data = Post.objects.filter(status=1).order_by("-created_on")
+            LocMemCache.set('Listofobject', data, timeout=30)
+
+        return data
 
 # class PostDetail(generic.DetailView):
 #     model = Post
 #     template_name = 'post_detail.html'
 
 
-def post_detail(request, slug):
-    template_name = "post_detail.html"
+def post_detail(request, post_id=None):
+    template_name = "main/post_detail.html"
     object_list = django_models.Post.objects.all()
-    post = get_object_or_404(Post, slug=slug)
+    post = get_object_or_404(Post, id=post_id)
     comments = post.comments.filter(active=True).order_by("-created_on")
     new_comment = None
 
@@ -63,75 +79,26 @@ def post_detail(request, slug):
         },
     )
 
-# найти библеотеку котор из кирилиц (из тайтла) делает латитницу
-# отказаться от слагов , вместо него айди
+
 def create_post(request):
     if request.method == "GET":
-        return render(request, "post_create.html")
+        return render(request, "create/post_create.html")
     elif request.method == "POST":
         title = request.POST.get("title", "")
-        slug = request.POST.get("slug", "")
         content = request.POST.get("content", "")
-
+        status = request.POST.get("status", "")
         models.Post.objects.create(
             title=title,
             content=content,
-            slug=slug,
-            author_id=True
-
+            author_id=True,
+            status=int(status)
         )
 
-        return redirect(reverse('home'))
-
-
-#
-# class PostCreate(View):
-#
-#     def post(self, request):
-#         bound_form = PostForm(request.POST)
-#         if bound_form.is_valid():
-#             new_post = bound_form.save()
-#             return redirect(new_post)
-#         return render(request, 'post_create.html', context={'form': bound_form})
-
-
-# def post_detail_img(request):
-#     object_list = django_models.Post.objects.all()
-#
-#     return render(request, 'post_detail.html', context={'object_list': object_list})
-
-
-def contacts(request):
-    context = {}
-    return render(request, 'contacts.html', context=context)
-
-
-def home(request):
-    object_list = django_models.Img.objects.all()
-
-    return render(request, 'home.html', context={'object_list': object_list})
-
-
-def home_post(request):
-    object_list = django_models.Img.objects.all()
-    return render(request, 'img_detail.html', context={'object_list': object_list})
-
-
-# class HomePageView(ListView):
-#     model = Img
-#     template_name = 'home.html'
-#     success_url = reverse_lazy('index')
-
-
-# class DetailPostView(ListView):
-#     model = Img
-#     form_class = PostForm
-#     template_name = 'img_detail.html'
-#     success_url = reverse_lazy('img')
+        return render(request, 'error/error_create.html')
 
 
 def main(request):
-    return render(request, 'main.html')
+    return render(request, 'main/main.html')
 
 
 @login_required
@@ -175,9 +142,9 @@ def rating_like(request, post_id=None):
             like.save()  # todo ЕСЛИ В БАЗЕ УЖЕ СТОИТ ЛАЙК
         else:
             like.delete()  # todo ЕСЛИ В БАЗЕ УЖЕ СТОИТ ДИЗЛАЙК
-            return render(request, 'error_likes.html')
+            return render(request, 'error/error_likes.html')
 
-    return redirect(reverse("post_detail", args=(post.slug,)))
+    return redirect(reverse("post_detail", args=(post_id,)))
 
 
 @login_required
@@ -200,14 +167,14 @@ def rating_dislike(request, post_id=None):
             like.save()  # todo ЕСЛИ В БАЗЕ УЖЕ СТОИТ ЛАЙК
         else:
             like.delete()  # todo ЕСЛИ В БАЗЕ УЖЕ СТОИТ ДИЗЛАЙК
-            return render(request, 'error_dislike.html')
+            return render(request, 'error/error_dislike.html')
 
-    return redirect(reverse("post_detail", args=(post.slug,)))
+    return redirect(reverse("post_detail", args=(post_id,)))
 
 
 def login_f(request):
     if request.method == 'GET':
-        return render(request, 'profile_login.html', context={})
+        return render(request, 'main/profile_login.html', context={})
     elif request.method == "POST":
         username = request.POST.get("username", None)
         password = request.POST.get("password", None)
@@ -215,15 +182,15 @@ def login_f(request):
         if username and password:
             user = authenticate(request, username=username, password=password)
             if user is None:
-                return render(request, 'profile_login.html', context={"error": "User не найден"})
+                return render(request, 'main/profile_login.html', context={"error": "User не найден"})
             login(request, user)
             return redirect('main')
-        return render(request, 'profile_login.html', context={"error": "username or password пустые"})
+        return render(request, 'main/profile_login.html', context={"error": "username or password пустые"})
 
 
 def register_f(request: HttpRequest) -> HttpResponse:
     if request.method == "GET":
-        return render(request, "profile_register.html", context={})
+        return render(request, "main/profile_register.html", context={})
 
     elif request.method == "POST":
         # todo чтение из формы
@@ -235,7 +202,7 @@ def register_f(request: HttpRequest) -> HttpResponse:
 
         # todo сравнение паролей
         if password1 != password2:
-            return render(request, "profile_register.html", context={"error": "incorrect password1"})
+            return render(request, "main/profile_register.html", context={"error": "incorrect password1"})
         # todo сравнение паролей
 
         # todo регистрация пользователя
@@ -262,18 +229,19 @@ def search(request):
         todos = Post.objects.filter(Q(title__icontains=search_query) | Q(content__icontains=search_query))
     else:
         todos = Post.objects.all()
+        return render(request, 'error/error_search.html')
 
-    return render(request, 'index.html', {'post_list': todos})
+    return render(request, 'main/index.html', {'post_list': todos})
 
 
 def profile(request):
     return render(request,
-                  'profile.html',
+                  'main/profile.html',
                   )
 
 
-def delete_post(request, slug):
-    Post.objects.get(slug=slug).delete()
+def delete_post(request, post_id=None):
+    Post.objects.get(id=post_id).delete()
     return redirect(reverse("home"))
 
 
@@ -281,9 +249,76 @@ def admin_all(request):
     users = User.objects.filter(is_superuser=True)
     user = User.objects.filter(is_active=True)
     return render(request,
-                  'profile_admin_all.html',
+                  'main/profile_admin_all.html',
                   {
                       "user_all": user,
                       "user_admin": users,
                   },
                   )
+
+
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = "Website Inquiry"
+            body = {
+                'first_name': form.cleaned_data['first_name'],
+                'last_name': form.cleaned_data['last_name'],
+                'email': form.cleaned_data['email_address'],
+                'message': form.cleaned_data['message'],
+            }
+            message = "\n".join(body.values())
+
+            try:
+                send_mail(subject, message, 'admin@example.com', ['admin@example.com'])
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return redirect("contacts_successfully")
+
+    form = ContactForm()
+    return render(request, "main/contacts.html", {'form': form})
+
+
+def contacts_successfully(request):
+    return render(request, 'main/contacts_successfully.html')
+
+
+class MyProfile(LoginRequiredMixin, View):
+    def get(self, request):
+        user_form = UserUpdateForm(instance=request.user)
+        profile_form = ProfileUpdateForm(instance=request.user.profile)
+
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form
+        }
+
+        return render(request, 'main/profile.html', context)
+
+    def post(self, request):
+        user_form = UserUpdateForm(
+            request.POST,
+            instance=request.user
+        )
+        profile_form = ProfileUpdateForm(
+            request.POST,
+            request.FILES,
+            instance=request.user.profile
+        )
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+
+            messages.success(request, 'Your profile has been updated successfully')
+
+            return redirect('profile')
+        else:
+            context = {
+                'user_form': user_form,
+                'profile_form': profile_form
+            }
+            messages.error(request, 'Error updating you profile')
+
+            return render(request, 'main/profile.html', context)

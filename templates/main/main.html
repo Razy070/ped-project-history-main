@@ -1,0 +1,40 @@
+{% extends 'components/base.html' %}
+{% block content %}
+
+
+<div class="px-4 pt-5 text-center border-bottom">
+    <h1 class="display-4 fw-bold">Проект "django-app-story"</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead">
+            Простой пример Django MVT(Model-View-Template) для развёртывания на ubuntu
+        </p>
+        <p class="lead mb-4">Особенности проекта:
+            <ul class=" custom-background-transparent-middle">
+                <h6 class="">Одно монолитное приложение</h6>
+                <h6 class="">Переменные лежат в коде</h6>
+                <h6 class="">База данных SQLite</h6>
+                <h6 class="">Обычная django-admin + примитивное отображение(регистрация) моделей</h6>
+                <h6 class="">MVT авторизация</h6>
+                <h6 class="">Вся маршрутизация стандартная</h6>
+                <h6 class="">Упрощённый формат создания моделей</h6>
+                <h6 class="">Все задачи синхронные</h6>
+                <h6 class="">Без тестов</h6>
+                <h6 class="">Только стандартные запросы</h6>
+                <h6 class="">Минимум типизации проекта</h6>
+                <h6 class="">и другое...</h6>
+            </ul>
+        </p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+        {% if request.user.is_authenticated %}
+        <a class="text-decoration-none lead btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'home' %}">
+            К постам!
+        </a>
+        {% endif %}
+    </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

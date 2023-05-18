@@ -7,7 +7,7 @@ from .models import Post
 
 class PostList(generic.ListView):
     queryset = Post.objects.filter(status=1).order_by("-created_on")
-    template_name = "index.html"
+    template_name = "main/index.html"
     paginate_by = 3
 
 
@@ -16,9 +16,9 @@ class PostList(generic.ListView):
 #     template_name = 'post_detail.html'
 
 
-def post_detail(request, slug):
+def post_detail(request, post_id=None):
     template_name = "post_detail.html"
-    post = get_object_or_404(Post, slug=slug)
+    post = get_object_or_404(Post, id=post_id)
     comments = post.comments.filter(active=True).order_by("-created_on")
     new_comment = None
     # Comment posted

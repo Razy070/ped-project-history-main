@@ -30,7 +30,7 @@
             <li><a href="{% url 'profile' %}" class="nav-link px-2 text-white">Аккаунт</a></li>
             {% if request.user.is_superuser %}
             <li><a href="{% url 'admin_all' %}" class="nav-link px-2 text-white">Admin</a></li>
-                <li><a href="{% url 'create_post' %}" class="nav-link px-2 text-white">create_post</a></li>
+                <li><a href="{% url 'create_post' %}" class="nav-link px-2 text-white">Create Post</a></li>
                 {% endif %}
 
         {% else %}
@@ -49,10 +49,10 @@
           {% else %}
               <li class="nav-link px-2 text-white">Пользователь: аноним</li>
           {% endif %}
-                <a href="{% url 'logout' %}" class="btn btn-outline-light me-2">Log out</a>
+                <a href="{% url 'logout' %}" class="btn btn-danger me-2">Выйти</a>
             {% else %}
-                <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Login</a>
-                <a href="{% url 'register' %}" class="btn btn-outline-light me-2">Register</a>
+                <a href="{% url 'login' %}" class="btn btn-primary me-2">Войти</a>
+                <a href="{% url 'register' %}" class="btn btn-warning me-2">Зарегистрироваться</a>
             {% endif %}
         </div>
       </div>

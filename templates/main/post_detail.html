@@ -1,0 +1,122 @@
+{% extends 'components/base.html' %} {% block content %}
+    {% load crispy_forms_tags %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 card mb-4  mt-3 left  top">
+                <div class="card-body">
+                    <h1>{% block title %} {{ post.title }} {% endblock title %}</h1>
+                    <p class=" text-muted">{{ post.author }} | {{ post.created_on }}</p>
+              <div class="text-center">
+
+                  {% if post.cover %}
+                        <img src="{{ post.cover.url }}" class="card-img-top img-fluid" alt="Product Image">
+                    {% endif %}
+
+
+
+                  <p class="card-text ">{{ post.content | safe }}</p>
+
+                  {% if request.user.is_superuser %}
+                      <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">Удалить пост ({{ request.user.username }})</a>
+                  {% endif %}
+              <br>
+              <br>
+                  <a class="btn btn btn-outline-danger" href="{% url 'home' %}">Вернуться назад к историям...</a>
+                </div>
+            </div>
+{#fa-solid fa-thumbs-up m-1 p-1#}
+
+<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a type="button" class="fa-solid fa-heart text-success" href="{% url 'rating_like' post.id %}"></a>
+        <a type="button" class="fa-solid fa-heart text-danger" href="{% url 'rating_dislike' post.id %}"></a>
+      </div>
+
+
+{#                                        <i class="fa-solid fa-thumbs-up m-1 p-1 text-danger"></i>111#}
+{#                                        <a href="{% url 'rating_like' post.id %}"#}
+{#                                        {% if my_like == 1 %}#}
+{#                                            class="btn btn-sm btn-success"#}
+{#                                        {% else %}#}
+{#                                            class="btn btn-sm btn-outline-success"#}
+{#                                        {% endif %}#}
+{#                                    ><i class="fa-solid fa-heart"></i>нравится</a>#}
+{#                                    <a href="{% url 'rating_dislike' post.id %}"#}
+{#                                        {% if my_like == -1 %}#}
+{#                                            class="btn btn-sm btn-danger"#}
+{#                                        {% else %}#}
+{#                                            class="btn btn-sm btn-outline-danger"#}
+{#                                        {% endif %}#}
+{#                                    ><i class="fa-solid fa-thumbs-down m-1 p-1"></i>не нравится</a>#}
+
+
+<i
+                                {% if my_like == 1 %}
+                                    class="fa-solid fa-heart m-1 p-1 text-success"
+                                {% else %}
+                                    class="fa-regular fa-heart m-1 p-1 text-success"
+                                {% endif %}
+                            > Нравится : {{ post.post_ratings.likes }} </i>
+                            <i
+                                {% if my_like == -1 %}
+                                    class="fa-solid fa-heart m-1 p-1 text-danger"
+                                {% else %}
+                                    class="fa-regular fa-heart m-1 p-1 text-danger"
+                                {% endif %}
+                            > Не нравится : {{ post.post_ratings.dislikes }} </i>
+                            <i class="fa-solid fa-comments m-1 p-1 text-secondary"></i>
+
+
+            {% block sidebar %} {% include 'components/sidebar.html' %} {% endblock sidebar %}
+
+            <div class="col-md-8 card mb-4  mt-3 ">
+                <div class="card-body">
+                    <!-- comments -->
+                    {% with comments.count as total_comments %}
+                        <h2>{{ total_comments }} comments</h2>
+
+                        <p>
+                    {% endwith %} {% for comment in comments %}
+                        </p>
+                        <div class="comments" style="padding: 10px;">
+
+                            <p class="font-weight-bold">
+                                {{ comment.name }}
+                                <span class=" text-muted font-weight-normal">
+                                    {{ comment.created_on }}
+                                </span>
+                            </p>
+                            {{ comment.body | linebreaks }}
+
+                        </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-8 card mb-4  mt-3 ">
+                <div class="card-body">
+                    {% if new_comment %}
+
+                        <div class="alert alert-success" role="alert">
+                            Ваш комментарий отправлен на проверку
+                        </div>
+                    {% else %}
+                        <h3>Напишите комментарий</h3>
+                        <form method="post" style="margin-top: 1.3em;">
+                            {{ comment_form | crispy }}
+                            {% csrf_token %}
+                            <div class="text-center">
+                            <button type="submit" class="btn btn-primary  btn-lg">Комментировать</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+
+{% endblock content %}

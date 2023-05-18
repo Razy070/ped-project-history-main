@@ -1,12 +1,14 @@
+from PIL import Image
 from django.contrib.auth.models import User
 from django.db import models
 
 STATUS = ((0, "Draft"), (1, "Publish"))
 
 
+# распределение прав в джанго
+# нужно с помощью сигнала(pre_save) оотменить создание новыого поста
 class Post(models.Model):
     title = models.CharField(max_length=200, unique=True)
-    slug = models.SlugField(max_length=200, unique=True)
     cover = models.ImageField(upload_to='images/', blank=True)  # blank=True
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="blog_posts"
@@ -20,7 +22,7 @@ class Post(models.Model):
         ordering = ["-created_on"]
 
     def __str__(self):
-        return f"{self.title} {self.slug}"
+        return f"{self.title} {self.id}"
 
     def post_ratings(self):
         """
@@ -52,7 +54,7 @@ class Post(models.Model):
     def get_absolute_url(self):
         from django.urls import reverse
 
-        return reverse("post_detail", kwargs={"slug": str(self.slug)})
+        return reverse("post_detail")
 
 
 class Comment(models.Model):
@@ -122,3 +124,28 @@ class PostRatingModel(models.Model):
 
     def __str__(self):
         return f"{self.user}({self.id}) | {'Лайкнул' if self.is_like else 'Дизлайкнул'} | {self.post.title}"
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    avatar = models.ImageField(
+        default='avatar.jpg',  # default avatar
+        upload_to='profile_avatars'  # dir to store the image
+    )
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+    def save(self, *args, **kwargs):
+        # save the profile first
+        super().save(*args, **kwargs)
+
+        # resize the image
+        img = Image.open(self.avatar.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            # create a thumbnail
+            img.thumbnail(output_size)
+            # overwrite the larger image
+            img.save(self.avatar.path)

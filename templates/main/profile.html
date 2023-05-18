@@ -1,0 +1,58 @@
+{% extends 'components/base.html' %}
+
+
+
+{% block content %}
+
+
+<div class="px-4 py-5 my-5 text-center">
+
+
+
+    <div class="mx-auto">
+<div class="album py-5 bg-body-tertiary">
+<div class="text-center">
+    <div class="container-fluid">
+
+<div class="row row-cols-1 row-cols-sm-1 row-cols-md-3">
+
+<div class="ui container">
+	<form method="POST" enctype="multipart/form-data" class="card">
+		{% csrf_token %}
+
+	    {% if user.profile %}
+			<img src="{{user.profile.avatar.url}}" alt="{{ user.username }}" class="avatar rounded mx-auto d-block img-fluid" height="150"  />
+	    {% endif %}
+
+	    <h2 class="text-center">{{ user.username | title }}</h2>
+	    <p class="text-center"><a href="mailto:{{user.email}}">{{user.email}}</a></p>
+   	    <hr>
+<br>
+            <label for="email">Ваш email:</label>
+            <input type="email" id="email" name="email" value="{{user.email}}" class="form-control"/>
+
+<br>
+		<label for="avatar" class="form-label">Аватарка:</label>
+		<input type="file" name="avatar" id="avatar" class="form-control">
+<br>
+        <button type="submit" class="btn btn-success">Обновить профиль</button>
+
+	</form>
+
+</div>
+
+</div>
+
+    </div>
+
+</div>
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock content %}
+
+

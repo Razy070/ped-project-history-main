@@ -1,0 +1,190 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+        <title>Django app</title>
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+        <meta name="google" content="notranslate" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="{% static 'logo512.png' %}" type="image/png">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/fontawesome/css/all.min.css' %}">
+
+
+        <header class="p-2 text-bg-dark">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/static" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+
+<div style="margin-right: 200px;">
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-rocket-takeoff" viewBox="0 0 16 16">
+  <path d="M9.752 6.193c.599.6 1.73.437 2.528-.362.798-.799.96-1.932.362-2.531-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532Z"/>
+  <path d="M15.811 3.312c-.363 1.534-1.334 3.626-3.64 6.218l-.24 2.408a2.56 2.56 0 0 1-.732 1.526L8.817 15.85a.51.51 0 0 1-.867-.434l.27-1.899c.04-.28-.013-.593-.131-.956a9.42 9.42 0 0 0-.249-.657l-.082-.202c-.815-.197-1.578-.662-2.191-1.277-.614-.615-1.079-1.379-1.275-2.195l-.203-.083a9.556 9.556 0 0 0-.655-.248c-.363-.119-.675-.172-.955-.132l-1.896.27A.51.51 0 0 1 .15 7.17l2.382-2.386c.41-.41.947-.67 1.524-.734h.006l2.4-.238C9.005 1.55 11.087.582 12.623.208c.89-.217 1.59-.232 2.08-.188.244.023.435.06.57.093.067.017.12.033.16.045.184.06.279.13.351.295l.029.073a3.475 3.475 0 0 1 .157.721c.055.485.051 1.178-.159 2.065Zm-4.828 7.475.04-.04-.107 1.081a1.536 1.536 0 0 1-.44.913l-1.298 1.3.054-.38c.072-.506-.034-.993-.172-1.418a8.548 8.548 0 0 0-.164-.45c.738-.065 1.462-.38 2.087-1.006ZM5.205 5c-.625.626-.94 1.351-1.004 2.09a8.497 8.497 0 0 0-.45-.164c-.424-.138-.91-.244-1.416-.172l-.38.054 1.3-1.3c.245-.246.566-.401.91-.44l1.08-.107-.04.039Zm9.406-3.961c-.38-.034-.967-.027-1.746.163-1.558.38-3.917 1.496-6.937 4.521-.62.62-.799 1.34-.687 2.051.107.676.483 1.362 1.048 1.928.564.565 1.25.941 1.924 1.049.71.112 1.429-.067 2.048-.688 3.079-3.083 4.192-5.444 4.556-6.987.183-.771.18-1.345.138-1.713a2.835 2.835 0 0 0-.045-.283 3.078 3.078 0 0 0-.3-.041Z"/>
+  <path d="M7.009 12.139a7.632 7.632 0 0 1-1.804-1.352A7.568 7.568 0 0 1 3.794 8.86c-1.102.992-1.965 5.054-1.839 5.18.125.126 3.936-.896 5.054-1.902Z"/>
+</svg>
+</div>
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        {% if request.user.is_authenticated %}
+          <li><a href="{% url 'main' %}" class="nav-link px-2 text-white">Главное меню</a></li>
+          <li><a href="{% url 'contact' %}" class="nav-link px-2 text-white">Контакты</a></li>
+          <li><a href="{% url 'home' %}" class="nav-link px-2 text-white">Истории Из Жизни</a></li>
+
+
+            {% if request.user.is_superuser %}
+            <li><a href="{% url 'admin_all' %}" class="nav-link px-2 text-white">Admin</a></li>
+                <li><a href="{% url 'create_post' %}" class="nav-link px-2 text-white">Create Post</a></li>
+                {% endif %}
+
+        {% else %}
+        {% endif %}
+        </ul>
+
+          {% if request.user.is_authenticated %}
+
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 d-flex" role="search" action="{% url 'search' %}" method="get">
+          <input type="search" name="search"  class="form-control form-control-dark text-bg-dark" placeholder="" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Поиск</button>
+        </form>
+
+          {% endif %}
+
+
+        <div class="text-end">
+            {% if request.user.is_authenticated %}
+                        <div class="text-end">
+                {% if request.user.is_authenticated %}
+             <div class="dropdown">
+      <a href="{% url 'profile' %}" class="d-flex align-items-center text-white text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="{{user.profile.avatar.url}}" alt="" width="42"  class="rounded-circle me-2 img-fluid">
+        <strong>{{ user.username }}</strong>
+      </a>
+    </div>
+          {% else %}
+              <li class="nav-link px-2 text-white">Пользователь: аноним</li>
+          {% endif %}
+                <br>
+                <a href="{% url 'logout' %}" class="btn btn-danger me-2">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-primary me-2">Войти</a>
+                <a href="{% url 'register' %}" class="btn btn-warning me-2">Зарегистрироваться</a>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+
+
+
+  </header>
+
+    </head>
+
+    <body>
+
+    {% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="text-center text-danger">Регистрация пользователя</h1>
+          </div>
+          <div class="card-body">
+            <form method="post" action="{% url 'register' %}">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="username" class="form-label">Имя пользователя:</label>
+                <input type="text" name="username" id="username" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" name="email" id="email" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="password1" class="form-label">Пароль:</label>
+                <input type="password" name="password1" id="password1" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="password2" class="form-label">Подтверждение пароля:</label>
+                <input type="password" name="password2" id="password2" class="form-control">
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary" href="{% url 'login' %}">Зарегистрироваться</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    {% endblock content %}
+
+    <!-- Footer -->
+   <footer class="bg-light py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md">
+        <h4>Название компании</h4>
+        <small class="text-muted">© Roman IT ACADEMY</small>
+      </div>
+      <div class="col-6 col-md">
+        <h5>О нас</h5>
+        <ul class="list-unstyled text-small">
+          <li><a class="link-secondary" href="https://github.com/Razy070">Команда</a></li>
+          <li><a class="link-secondary" href="https://yandex.kz/maps/65/novosibirsk/?ll=82.976341%2C54.990868&mode=poi&poi%5Bpoint%5D=82.979163%2C54.985535&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D202327768959&z=14">Местоположение</a></li>
+          <li><a class="link-secondary" href="https://github.com/Razy070">Карьера</a></li>
+          <li><a class="link-secondary" href="https://github.com/Razy070">Новости</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md">
+        <h5>Служба поддержки</h5>
+        <ul class="list-unstyled text-small">
+          <li><a class="link-secondary" href="{% url 'contact' %}">Контакты</a></li>
+          <li><a class="link-secondary" href="https://yandex.kz/maps/65/novosibirsk/?ll=82.976341%2C54.990868&mode=poi&poi%5Bpoint%5D=82.979163%2C54.985535&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D202327768959&z=14">Где мы находимся</a></li>
+          <li><a class="link-secondary" href="https://github.com/Razy070">Справка</a></li>
+          <li><a class="link-secondary" href="{% url 'contact' %}">Обратная связь</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md">
+        <h5>Следите за нами</h5>
+        <ul class="list-unstyled text-small">
+          <li><a class="link-secondary" href="https://github.com/Razy070">Github</a></li>
+          <li><a class="link-secondary" href="https://github.com/Razy070">Github</a></li>
+          <li><a class="link-secondary" href="https://github.com/Razy070">Github</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <footer class="py-3 bg-grey">
+
+    </footer>
+
+    <!-- bootstrap scripts -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+</body>
+
+
+</html>
